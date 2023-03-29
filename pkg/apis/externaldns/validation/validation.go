@@ -19,6 +19,7 @@ package validation
 import (
 	"errors"
 	"fmt"
+	"os"
 
 	"k8s.io/apimachinery/pkg/labels"
 
@@ -67,7 +68,15 @@ func ValidateConfig(cfg *externaldns.Config) error {
 			return errors.New("no Infoblox Grid Manager host specified")
 		}
 		if cfg.InfobloxWapiPassword == "" {
-			return errors.New("no Infoblox WAPI password specified")
+			if cfg.InfobloxWapiPasswordFile != "" {
+				b, err := os.ReadFile(cfg.InfobloxWapiPasswordFile)
+				if err != nil {
+					return errors.New("Unable to read Infoblox WAPI password file")
+				}
+				cfg.InfobloxWapiPassword = string(b)
+			} else {
+				return errors.New("no Infoblox WAPI password specified")
+			}
 		}
 	}
 

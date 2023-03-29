@@ -118,6 +118,7 @@ type Config struct {
 	InfobloxWapiPort                  int
 	InfobloxWapiUsername              string
 	InfobloxWapiPassword              string `secure:"yes"`
+	InfobloxWapiPasswordFile          string
 	InfobloxWapiVersion               string
 	InfobloxSSLVerify                 bool
 	InfobloxView                      string
@@ -267,6 +268,7 @@ var defaultConfig = &Config{
 	InfobloxWapiPort:            443,
 	InfobloxWapiUsername:        "admin",
 	InfobloxWapiPassword:        "",
+	InfobloxWapiPasswordFile:    "",
 	InfobloxWapiVersion:         "2.3.1",
 	InfobloxSSLVerify:           true,
 	InfobloxView:                "",
@@ -485,6 +487,7 @@ func (cfg *Config) ParseFlags(args []string) error {
 	app.Flag("infoblox-wapi-port", "When using the Infoblox provider, specify the WAPI port (default: 443)").Default(strconv.Itoa(defaultConfig.InfobloxWapiPort)).IntVar(&cfg.InfobloxWapiPort)
 	app.Flag("infoblox-wapi-username", "When using the Infoblox provider, specify the WAPI username (default: admin)").Default(defaultConfig.InfobloxWapiUsername).StringVar(&cfg.InfobloxWapiUsername)
 	app.Flag("infoblox-wapi-password", "When using the Infoblox provider, specify the WAPI password (required when --provider=infoblox)").Default(defaultConfig.InfobloxWapiPassword).StringVar(&cfg.InfobloxWapiPassword)
+	app.Flag("infoblox-wapi-password-file", "When using the Infoblox provider, specify the WAPI password file (required when --provider=infoblox and --infoblox-wapi-password is not set)").Default(defaultConfig.InfobloxWapiPasswordFile).StringVar(&cfg.InfobloxWapiPasswordFile)
 	app.Flag("infoblox-wapi-version", "When using the Infoblox provider, specify the WAPI version (default: 2.3.1)").Default(defaultConfig.InfobloxWapiVersion).StringVar(&cfg.InfobloxWapiVersion)
 	app.Flag("infoblox-ssl-verify", "When using the Infoblox provider, specify whether to verify the SSL certificate (default: true, disable with --no-infoblox-ssl-verify)").Default(strconv.FormatBool(defaultConfig.InfobloxSSLVerify)).BoolVar(&cfg.InfobloxSSLVerify)
 	app.Flag("infoblox-view", "DNS view (default: \"\")").Default(defaultConfig.InfobloxView).StringVar(&cfg.InfobloxView)
